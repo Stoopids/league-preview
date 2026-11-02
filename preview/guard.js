@@ -1,10 +1,11 @@
-/* PREVIEW guard (league-preview-s28i, after preview-kit/preview-guard.js). Injected first in <head>, before any app script.
+window.LACCEPT_FLOW=true;   /* s28j #19: the preview build turns the accept/decline flow on (League default OFF) */
+/* PREVIEW guard (league-preview-s28j, after preview-kit/preview-guard.js). Injected first in <head>, before any app script.
    - Store: textdb GETs are answered locally from preview/league-kv.json (a bundled MOCK league); nothing is ever sent to textdb.
    - Network: only GET/HEAD leave the page, same-origin only (ESPN refresh off: bundled static scores). POST/PUT/PATCH/DELETE are blocked here and logged (console.warn).
    - View-only: ?view=1 (the app's own League view mode) is forced, except the bet-form deep links (?pvme=1), which show the form as manager Ana with every write blocked.
-   - Service worker off; red banner "PREVIEW s28i · view-only" on every page. */
+   - Service worker off; red banner "PREVIEW s28j · view-only" on every page. */
 (function(){
- var C={label:'s28i',main:'7MMR2DG4T78XTJG3',me:'1510edfe18d7',seen:'1793590128025'};
+ var C={label:'s28j',main:'7MMR2DG4T78XTJG3',me:'1510edfe18d7',seen:'1793590128025'};
  var BASE=new URL('./',document.currentScript&&document.currentScript.src?new URL('..',document.currentScript.src):location.href).href;
  window.__previewBlocked=[];
  function note(m,x,why){window.__previewBlocked.push(m+' '+x+' ('+why+')');console.warn('[PREVIEW view-only] blocked',m,String(x),why);toast()}
@@ -49,6 +50,10 @@
    else if(GO==='form'){when('#b27Form',function(f){sc(f);done()})}
    else if(GO==='autonote'){when('#b27Text',function(i){var o=document.querySelector('#b27Form [data-lb=opp]');if(o)o.click();setTimeout(function(){var t=document.getElementById('b27Text');t.focus();t.value='Kansas -4 beats Fordham';t.dispatchEvent(new Event('input',{bubbles:true}));setTimeout(function(){var a=document.querySelector('#b27Form [data-lb=amt][data-v="10"]');if(a)a.click();setTimeout(function(){var t2=document.getElementById('b27Text');t2.dispatchEvent(new Event('input',{bubbles:true}));when('#b27Form [data-s29-auto]',function(n){sc(document.getElementById('b27Sum')||n);done()},8000);setTimeout(done,8500)},1200)},500)},300)})}
    else if(GO==='kansas'){when('#b27Text',function(i){var c=[].slice.call(document.querySelectorAll('.b27-read')).find(function(x){return /by more than 4/.test(x.textContent)});sc(i);done()})}
+   else if(GO==='pool'){when('.b27-pool',function(c){sc(c);done()})}
+   else if(GO==='noanyone'){when('#b27Form .b27-selbar',function(e){sc(document.querySelector('#b27Form .b27-opps')||e);done()})}
+   else if(GO==='paste'){when('#b27PzT',function(t){t.value='ana v ben 2-1 odds, duke +4 v virginia';t.dispatchEvent(new Event('input',{bubbles:true}));var r=document.getElementById('b27PzRead');if(r)r.click();setTimeout(function(){when('#b27PzSum',function(e){sc(document.getElementById('b27Pz')||e);done()},8000);setTimeout(done,8500)},400)})}
+   else if(GO==='posted'){when('.b27-posted',function(){var c=[].slice.call(document.querySelectorAll('.b27-c[data-bet]')).find(function(x){return /Posted by Cy/.test(x.textContent)});sc(c||document.querySelector('.b27-posted'));done()})}
    else if(GO==='bottom'){window.scrollTo(0,document.body.scrollHeight);done()}
    else if(GO==='share'){when('#lapp [data-a]',function(){var c=[].slice.call(document.querySelectorAll('button')).find(function(b){return /^\s*Copy/.test(b.textContent)});if(c)sc(c);done()})}
    else if(GO&&GO.charAt(0)==='#'){when(GO,function(e){sc(e);done()})}
